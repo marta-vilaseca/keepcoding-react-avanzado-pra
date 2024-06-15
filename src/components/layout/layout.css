@@ -1,0 +1,99 @@
+.layout {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.layout__main {
+  flex-grow: 2;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+/* Basic layout styling for INDIVIDUAL ADVERT page
+--------------------------------------------------- */
+.individual {
+  position: relative;
+  max-width: 760px;
+
+  h2 {
+    text-align: left;
+    color: var(--color-mid-text);
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+
+  .error-message {
+    margin: 2rem 0 0 0;
+  }
+}
+
+/* Basic layout styling for the LOGIN page
+--------------------------------------------------- */
+.login {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../../assets/bg.jpg") no-repeat fixed top center / cover;
+    opacity: 0.6;
+    z-index: -1;
+  }
+
+  display: grid;
+  place-items: center;
+
+  .error-message {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+}
+
+/* Basic layout styling for CREATE ADVERT page
+--------------------------------------------------- */
+.createAdvert {
+  h2 {
+    color: var(--color-mid);
+    margin: 2rem 0;
+  }
+}
+
+/* Basic layout styling for the NOT FOUND page
+--------------------------------------------------- */
+.notfound {
+  display: grid;
+  place-items: center;
+  position: relative;
+  color: var(--neutral-mid-text);
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../../assets/404.jpg") no-repeat fixed top center / cover;
+    opacity: 0.7;
+    z-index: -1;
+  }
+
+  h2 {
+    font-size: 8rem;
+    line-height: 8rem;
+  }
+
+  h3 {
+    font-size: 2rem;
+    line-height: 3.8rem;
+  }
+}

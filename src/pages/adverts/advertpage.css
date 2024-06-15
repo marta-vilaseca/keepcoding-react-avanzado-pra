@@ -1,0 +1,116 @@
+.advert__individual {
+  padding: 3rem 0 3rem 0;
+}
+
+.button__delete {
+  background-color: var(--bg-color);
+  color: var(--error-bg);
+  border: 3px solid var(--error-bg);
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 3rem;
+  right: 2rem;
+}
+
+.button__delete:hover {
+  background-color: var(--error-bg);
+  color: var(--reverse-text-color);
+  cursor: pointer;
+}
+
+.adv__ind__details {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.adv__ind__sale {
+  background-color: var(--text-color);
+  color: var(--reverse-text-color);
+  font-weight: 600;
+  padding: 0 1rem;
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  line-height: 3.6rem;
+  height: 3.6rem;
+}
+
+.adv__ind__tags {
+  display: flex;
+  gap: 1rem;
+}
+
+.adv__ind__tags .card__tag {
+  line-height: 3rem;
+  height: 3.6rem;
+}
+
+.adv__ind__photo {
+  position: relative;
+}
+
+.adv__ind__photo img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: 1.5rem;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 13px 27px -5px, rgba(0, 0, 0, 0.2) 0px 8px 16px -8px;
+}
+
+.adv__ind__photo::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+/* Price tag
+   Adapted from: https://codepen.io/uberpwner/pen/xvdJxx 
+-------------------------------------------------------- */
+.adv__ind__price {
+  display: inline-block;
+  width: auto;
+  height: 3.6rem;
+  background-color: var(--neutral-bg);
+  border-radius: 0.5rem 0 0 0.5rem;
+  border-left: 1px solid var(--neutral-bg);
+  margin-left: auto;
+  position: relative;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 1.8rem;
+  line-height: 3.6rem;
+  padding: 0 1.5rem 0 1rem;
+  margin-right: 1.8rem;
+}
+
+/* triangle */
+.adv__ind__price:before {
+  content: "";
+  position: absolute;
+  display: block;
+  right: -1.8rem;
+  width: 0;
+  height: 0;
+  border-top: 1.8rem solid transparent;
+  border-bottom: 1.8rem solid transparent;
+  border-left: 1.8rem solid var(--neutral-bg);
+}
+
+/* circle */
+.adv__ind__price:after {
+  content: "";
+  background-color: var(--bg-color);
+  border-radius: 50%;
+  width: 0.6rem;
+  height: 0.6rem;
+  display: block;
+  position: absolute;
+  right: -5px;
+  top: 1.3rem;
+}

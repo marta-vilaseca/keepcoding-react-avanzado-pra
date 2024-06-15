@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Emoji:wght@300..700&display=swap");
+
+:root {
+  --bg-color: #f3f1ebff;
+  --text-color: #2f3735ff;
+  --reverse-text-color: #f3f1ebff;
+
+  --neutral-text: #424c4aff;
+  --neutral-mid-text: #616f6cff;
+  --neutral-mid: #97a7a4ff;
+  --neutral-mid-bg: #bdc7c4ff;
+  --neutral-bg: #dcdfdaff;
+
+  --color-text: #146752ff;
+  --color-mid-text: #1b8e72ff;
+  --color-mid: #66cdaaff;
+  --color-mid-bg: #a9dbc9ff;
+  --color-bg: #d7eae1ff;
+
+  --color-mid-alpha-40: rgba(102, 205, 170, 0.4);
+
+  --error-text: #ec5b5bff;
+  --error-bg: #f08080ff;
+
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 450;
+  font-style: normal;
+
+  color-scheme: light dark;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.emojicon {
+  font-family: "Noto Emoji", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.text__bold {
+  font-weight: 600;
+}
+
+.button__link {
+  display: inline-block;
+  font-size: 1.6rem;
+  border-radius: 1rem;
+  padding: 0 2rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.layout > .error-message {
+  width: 100%;
+  margin: 0;
+}
+
+main .error-message {
+  border-radius: 1rem;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.error-message {
+  background-color: var(--error-text);
+  padding: 1rem;
+  font-weight: 600;
+  color: var(--reverse-text-color);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #f3f1ebff;
+    --bg-color: #212726ff;
+    --reverse-text-color: #2f3735ff;
+
+    --neutral-bg: #424c4aff;
+    --neutral-mid-bg: #616f6cff;
+    --neutral-mid: #97a7a4ff;
+    --neutral-mid-text: #bdc7c4ff;
+    --neutral-text: #dcdfdaff;
+  }
+} */
