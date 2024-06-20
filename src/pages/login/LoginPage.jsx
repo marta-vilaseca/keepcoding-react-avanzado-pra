@@ -1,22 +1,23 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/common/Button.jsx";
 import { Loader } from "../../components/common/Loader.jsx";
 import { FormCheckbox } from "../../components/common/formElements/formCheckbox.jsx";
 import { FormInputText } from "../../components/common/formElements/formInputText.jsx";
 import Layout from "../../components/layout/Layout.jsx";
-import { useAuth } from "../../context/AuthContextProvider.jsx";
-import { login } from "../../services/loginService.js";
+import { authLogin } from "../../store/actions";
 import "./login.css";
 
 export function LoginPage() {
+  const dispatch = useDispatch();
+
   const [formValues, setFormValues] = useState({ email: "", password: "", rememberMe: false });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { onLogin } = useAuth();
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -28,20 +29,9 @@ export function LoginPage() {
     }));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      setIsLoading(true);
-      await login(formValues);
-      onLogin();
-      const to = location.state?.from || "/";
-      navigate(to, { replace: true });
-    } catch (error) {
-      setIsLoading(false);
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(authLogin(formValues));
   };
 
   const resetError = () => setError(null);

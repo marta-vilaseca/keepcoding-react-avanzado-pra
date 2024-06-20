@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
 import AdvertListItem from "../../components/adverts/AdvertListItem";
 import EmptyList from "../../components/adverts/EmptyList";
 import { Button } from "../../components/common/Button";
@@ -8,104 +10,76 @@ import { FormCheckbox } from "../../components/common/formElements/formCheckbox"
 import { FormInputText } from "../../components/common/formElements/formInputText";
 import { FormSelect } from "../../components/common/formElements/formSelect";
 import Layout from "../../components/layout/Layout";
-import { getAdverts, getAllTags } from "../../services/advertsService";
+
+import { clearFilters, loadAdverts, loadTags, updateFilters } from "../../store/actions";
+import { getAllAdverts, getAllTags, getFilters } from "../../store/selectors";
+
 import "./advertsPage.css";
 
 export function AdvertsPage() {
+  const dispatch = useDispatch();
+
+  const adverts = useSelector(getAllAdverts);
+  const allTags = useSelector(getAllTags);
+  const filters = useSelector(getFilters) || { name: "", tags: [], sale: "all" };
+
   const [error, setError] = useState(null);
-  const [adverts, setAdverts] = useState([]);
-  const [allTags, setAllTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    nameFilter: "",
-    tagsFilter: [],
-    saleFilter: "all",
-  });
-
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        setIsLoading(true);
-        const tags = await getAllTags();
-        setAllTags(tags);
-      } catch (error) {
-        setError(`Failed to fetch tags: ${error.message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchTags();
-
-    const fetchAdverts = async () => {
-      try {
-        setIsLoading(true);
-        const adverts = await getAdverts();
-        setAdverts(adverts);
-      } catch (error) {
-        setError(`Failed to fetch adverts: ${error.message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchAdverts();
-  }, []);
+    dispatch(loadAdverts());
+    dispatch(loadTags());
+  }, [dispatch]);
 
   const resetError = () => setError(null);
 
-  const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
+  const applyFilters = (filters, adverts) => {
+    let filteredAdverts = adverts;
 
-    if (name === "tagsFilter" && value === "") {
-      setFormData((prevState) => ({
-        ...prevState,
-        tagsFilter: [],
-      }));
-    } else {
-      if (type === "checkbox") {
-        const updatedTags = checked ? [...formData.tagsFilter, value] : formData.tagsFilter.filter((tag) => tag !== value);
-
-        setFormData((prevState) => ({
-          ...prevState,
-          tagsFilter: updatedTags,
-        }));
-      } else {
-        const processedValue = value === "true" ? true : value === "false" ? false : value;
-        setFormData((prevState) => ({
-          ...prevState,
-          [name]: processedValue,
-        }));
-      }
+    if (filters.name) {
+      filteredAdverts = filteredAdverts.filter((advert) => advert.name.toLowerCase().startsWith(filters.name.toLowerCase()));
     }
+
+    if (filters.sale !== "all") {
+      filteredAdverts = filteredAdverts.filter((advert) => advert.sale.toString() === filters.sale);
+    }
+
+    if (filters.tags.length > 0) {
+      filteredAdverts = filteredAdverts.filter((advert) => filters.tags.every((tag) => advert.tags.includes(tag)));
+    }
+
+    return filteredAdverts;
   };
 
-  const filteredAdverts = adverts.filter((advert) => {
-    const nameMatch = advert.name.toLowerCase().startsWith(formData.nameFilter.toLowerCase());
-    const saleMatch = formData.saleFilter === "all" || advert.sale === formData.saleFilter;
-    const tagMatch = formData.tagsFilter.length === 0 || formData.tagsFilter.every((tag) => advert.tags.includes(tag));
+  const handleChange = (event) => {
+    const { name, value, checked } = event.target;
+    let updatedFilters = { ...filters };
+    if (name === "tags") {
+      updatedFilters.tags = checked ? [...updatedFilters.tags, value] : updatedFilters.tags.filter((tag) => tag !== value);
+    } else {
+      updatedFilters[name] = value;
+    }
 
-    return nameMatch && saleMatch && tagMatch;
-  });
+    dispatch(updateFilters(updatedFilters));
+  };
 
   const handleClear = (event) => {
     event.preventDefault();
-    setFormData({
-      nameFilter: "",
-      tagsFilter: [],
-      saleFilter: "all",
-    });
+    dispatch(clearFilters());
   };
+
+  let filteredAdverts = filters ? applyFilters(filters, adverts) : adverts;
 
   return (
     <Layout page="adverts">
       <div className="adverts__filter">
         <form>
-          <FormInputText name="nameFilter" value={formData.nameFilter} onChange={handleChange} />
-          <FormSelect name="saleFilter" value={formData.saleFilter} onChange={handleChange} options={{ all: "All", true: "For sale", false: "Wanted" }} />
+          <FormInputText name="name" value={filters.name} onChange={handleChange} />
+          <FormSelect name="sale" value={filters.sale} onChange={handleChange} options={{ all: "All", true: "For sale", false: "Wanted" }} />
           <div className="tag__options">
-            <FormCheckbox key="any" id="any" labelText="any tag" name="tagsFilter" value="" checked={formData.tagsFilter.length === 0} onChange={handleChange} />
+            <FormCheckbox key="any" id="any" labelText="any tag" name="tags" value="" checked={filters.tags.length === 0} onChange={handleChange} />
             {allTags.map((tag) => (
-              <FormCheckbox key={tag} id={tag} labelText={tag} name="tagsFilter" value={tag} checked={formData.tagsFilter.includes(tag)} onChange={handleChange} />
+              <FormCheckbox key={tag} id={tag} labelText={tag} name="tags" value={tag} checked={filters.tags.includes(tag)} onChange={handleChange} />
             ))}
           </div>
           <Button onClick={handleClear}>Clear</Button>
