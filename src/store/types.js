@@ -16,6 +16,10 @@ export const ADVERTS_LOADED_PENDING = "adverts/loaded/pending";
 export const ADVERTS_LOADED_FULFILLED = "adverts/loaded/fulfilled";
 export const ADVERTS_LOADED_REJECTED = "adverts/loaded/rejected";
 
+export const ADVERT_SINGLE_PENDING = "advert/single/pending";
+export const ADVERT_SINGLE_FULFILLED = "advert/single/fulfilled";
+export const ADVERT_SINGLE_REJECTED = "advert/single/rejected";
+
 export const ADVERTS_CREATED = "adverts/created";
 
 export const TAGS_LOADED_PENDING = "tags/loaded/pending";

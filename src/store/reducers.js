@@ -4,6 +4,9 @@ import {
   ADVERTS_LOADED_PENDING,
   ADVERTS_LOADED_FULFILLED,
   ADVERTS_LOADED_REJECTED,
+  ADVERT_SINGLE_PENDING,
+  ADVERT_SINGLE_FULFILLED,
+  ADVERT_SINGLE_REJECTED,
   ADVERTS_CREATED,
   AUTH_LOGIN_FULFILLED,
   // AUTH_LOGOUT_FULFILLED,
@@ -14,9 +17,6 @@ import {
   TAGS_LOADED_PENDING,
   TAGS_LOADED_FULFILLED,
   TAGS_LOADED_REJECTED,
-  // SET_NAME_FILTER,
-  // SET_SALE_FILTER,
-  // SET_TAGS_FILTER,
   UPDATE_FILTERS,
   CLEAR_FILTERS,
 } from "./types";
@@ -88,6 +88,23 @@ export function adverts(state = defaultState.adverts, action) {
       return {
         ...state,
         error: action.payload,
+      };
+    case ADVERT_SINGLE_PENDING:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ADVERT_SINGLE_FULFILLED:
+      return {
+        ...state,
+        data: [...state.data, action.payload],
+        loading: false,
+      };
+    case ADVERT_SINGLE_REJECTED:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
       };
     case ADVERTS_CREATED:
       return [...state.data, action.payload];

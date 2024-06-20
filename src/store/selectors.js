@@ -6,6 +6,8 @@ export const getUsernameError = (state) => state.user.error;
 export const areAdvertsLoaded = (state) => state.adverts.loaded;
 export const getAllAdverts = (state) => state.adverts.data;
 
+export const getAdvertByID = (id) => (state) => getAllAdverts(state).find((advert) => advert.id === id);
+
 export const areTagsLoaded = (state) => state.tags.loaded;
 export const getAllTags = (state) => state.tags.data;
 

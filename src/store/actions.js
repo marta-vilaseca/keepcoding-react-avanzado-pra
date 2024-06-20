@@ -1,4 +1,4 @@
-import { areAdvertsLoaded, areTagsLoaded } from "./selectors";
+import { areAdvertsLoaded, areTagsLoaded, getAdvertByID } from "./selectors";
 // import { getUserName } from "../api/client";
 // import storage from "../utils/storage";
 
@@ -13,6 +13,9 @@ import {
   ADVERTS_LOADED_PENDING,
   ADVERTS_LOADED_FULFILLED,
   ADVERTS_LOADED_REJECTED,
+  ADVERT_SINGLE_PENDING,
+  ADVERT_SINGLE_FULFILLED,
+  ADVERT_SINGLE_REJECTED,
   TAGS_LOADED_PENDING,
   TAGS_LOADED_FULFILLED,
   TAGS_LOADED_REJECTED,
@@ -122,6 +125,38 @@ export const advertsLoadedFulfilled = (adverts) => ({
 export const advertsLoadedRejected = (error) => ({
   type: ADVERTS_LOADED_REJECTED,
   payload: error,
+});
+
+/* SINGLE ADVERT
+----------------------------------------- */
+export const loadSingleAdvert =
+  (id) =>
+  async (dispatch, getState, { services }) => {
+    const state = getState();
+    if (!getAdvertByID(id)(state)) {
+      try {
+        dispatch(advertSinglePending());
+        const advert = await services.adverts.getAdvert(id);
+        dispatch(advertSingleFulfilled(advert));
+      } catch (error) {
+        dispatch(advertSingleRejected(error));
+      }
+    }
+  };
+
+export const advertSinglePending = () => ({
+  type: ADVERT_SINGLE_PENDING,
+});
+
+export const advertSingleFulfilled = (adverts) => ({
+  type: ADVERT_SINGLE_FULFILLED,
+  payload: adverts,
+});
+
+export const advertSingleRejected = (error) => ({
+  type: ADVERT_SINGLE_REJECTED,
+  payload: error,
+  error: true,
 });
 
 /* TAGS

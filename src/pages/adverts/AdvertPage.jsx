@@ -5,36 +5,30 @@ import defaultPhoto from "../../assets/no-photo.png";
 import { ConfirmationButton } from "../../components/common/ConfirmationButton";
 import { Loader } from "../../components/common/Loader";
 import Layout from "../../components/layout/Layout";
-import { deleteAdvert, getAdvert } from "../../services/advertsService";
+import { deleteAdvert } from "../../services/advertsService";
+
+import { useDispatch, useSelector } from "react-redux";
+import { loadSingleAdvert } from "../../store/actions";
+import { getAdvertByID } from "../../store/selectors";
 import "./advertpage.css";
 
 export function AdvertPage() {
   const [error, setError] = useState(null);
-  const [advert, setAdvert] = useState(null);
+  // const [advert, setAdvert] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const params = useParams();
+  const { id } = useParams();
+
+  const advert = useSelector((state) => getAdvertByID(id)(state));
 
   useEffect(() => {
-    async function getAdvertFromService() {
-      try {
-        setIsLoading(true);
-        const advert = await getAdvert(params.id);
-        setAdvert(advert);
-      } catch (error) {
-        if (error.status === 404) {
-          navigate("/404");
-        } else {
-          setError(error);
-        }
-      } finally {
-        setIsLoading(false);
-      }
+    if (id && !advert) {
+      dispatch(loadSingleAdvert(id));
     }
-    getAdvertFromService();
-  }, [params.id, navigate]);
+  }, [dispatch, id, advert]);
 
   const handleDelete = async () => {
     try {
