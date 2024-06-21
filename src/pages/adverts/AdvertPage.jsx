@@ -24,16 +24,23 @@ export function AdvertPage() {
 
   const advert = useSelector((state) => getAdvertByID(id)(state));
 
+  // useEffect(() => {
+  //   if (id && !advert) {
+  //     dispatch(loadSingleAdvert(id));
+  //   }
+  // }, [dispatch, id, advert]);
+
   useEffect(() => {
-    if (id && !advert) {
-      dispatch(loadSingleAdvert(id));
+    if (id) {
+      setIsLoading(true);
+      dispatch(loadSingleAdvert(id)).finally(() => setIsLoading(false));
     }
-  }, [dispatch, id, advert]);
+  }, [dispatch, id]);
 
   const handleDelete = async () => {
     try {
       setIsLoading(true);
-      await deleteAdvert(params.id);
+      await deleteAdvert(id);
       navigate("/adverts");
     } catch (error) {
       setError(error);
@@ -71,9 +78,6 @@ export function AdvertPage() {
               cancelActionText="cancel"
               error={error}
             />
-            {/* <Button onClick={confirmDelete} className="button__delete">
-              Delete ad
-            </Button> */}
             <div className="adv__ind__details">
               <p className="adv__ind__sale">{advert.sale ? "Venta" : "Compra"}</p>
               <ul className="adv__ind__tags">

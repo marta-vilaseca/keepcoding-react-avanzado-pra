@@ -14,8 +14,15 @@ export const getAdvert = async (adId) => {
 };
 
 export const createAdvert = async (adData) => {
-  const response = await client.post(adsUrl, adData, { headers: { "Content-type": "multipart/form-data" } });
-  return response;
+  try {
+    const response = await client.post(adsUrl, adData, {
+      headers: { "Content-type": "multipart/form-data" },
+    });
+    console.log("Response from server:", response); // Log response here
+    return response; // Ensure response is returned correctly
+  } catch (error) {
+    throw new Error(`Failed to create advert: ${error.message}`);
+  }
 };
 
 export const deleteAdvert = async (adId) => {

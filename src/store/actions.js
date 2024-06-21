@@ -16,6 +16,9 @@ import {
   ADVERT_SINGLE_PENDING,
   ADVERT_SINGLE_FULFILLED,
   ADVERT_SINGLE_REJECTED,
+  CREATE_ADVERT_PENDING,
+  CREATE_ADVERT_FULFILLED,
+  CREATE_ADVERT_REJECTED,
   TAGS_LOADED_PENDING,
   TAGS_LOADED_FULFILLED,
   TAGS_LOADED_REJECTED,
@@ -155,6 +158,74 @@ export const advertSingleFulfilled = (adverts) => ({
 
 export const advertSingleRejected = (error) => ({
   type: ADVERT_SINGLE_REJECTED,
+  payload: error,
+  error: true,
+});
+
+/* CREATE ADVERT 
+----------------------------------------- */
+export const createNewAdvert =
+  (formValues) =>
+  async (dispatch, _getState, { services, router }) => {
+    try {
+      dispatch(createAdvertPending());
+      console.log("Form content:", formValues);
+      const response = await services.adverts.createAdvert(formValues);
+      console.log("Response from createAdvert:", response);
+      dispatch(createAdvertFulfilled(response));
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const redirectTo = `/adverts/${response.id}`;
+      router.navigate(redirectTo, { replace: true });
+    } catch (error) {
+      if (error) {
+        dispatch(createAdvertRejected(error));
+      }
+    }
+  };
+// export const createNewAdvert =
+//   (formValues) =>
+//   async (dispatch, getState, { services }) => {
+//     try {
+//       dispatch(createAdvertPending());
+//       console.log("available services: ", services);
+//       const response = await services.adverts.createAdvert(formValues);
+
+//       // Check if response.data contains the id
+//       console.log("Create advert response:", response);
+
+//       dispatch(createAdvertFulfilled(response.data));
+//       console.log("Redux State after advert creation:", getState());
+
+//       setTimeout(() => {
+//         // Check if response.data.id is defined before navigating
+//         if (response.data && response.data.id) {
+//           router.navigate(`/adverts/${response.data.id}`, { replace: true });
+//         } else {
+//           console.error("No id found in create advert response:", response);
+//           // Optionally handle this case, perhaps by showing an error message
+//         }
+//       }, 1000); // 1000ms delay for navigation
+//     } catch (error) {
+//       // Handle errors
+//       if (error) {
+//         console.error("Error creating advert:", error);
+//         dispatch(createAdvertRejected(error));
+//       }
+//     }
+//   };
+
+export const createAdvertPending = () => ({
+  type: CREATE_ADVERT_PENDING,
+});
+
+export const createAdvertFulfilled = (advert) => ({
+  type: CREATE_ADVERT_FULFILLED,
+  payload: advert,
+});
+
+export const createAdvertRejected = (error) => ({
+  type: CREATE_ADVERT_REJECTED,
   payload: error,
   error: true,
 });

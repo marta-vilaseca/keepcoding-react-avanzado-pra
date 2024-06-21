@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/common/Button";
 import { Loader } from "../../components/common/Loader";
@@ -7,12 +8,12 @@ import { FormFieldset } from "../../components/common/formElements/formFieldset"
 import { FormInputText } from "../../components/common/formElements/formInputText";
 import { FormRadioButton } from "../../components/common/formElements/formRadioButton";
 import Layout from "../../components/layout/Layout";
-import { createAdvert, getAllTags } from "../../services/advertsService";
+import { createNewAdvert, loadTags } from "../../store/actions";
+import { getAllTags } from "../../store/selectors";
 import "./newAdvertPage.css";
 
 export function NewAdvertPage() {
   const [error, setError] = useState(null);
-  const [allTags, setAllTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -23,50 +24,73 @@ export function NewAdvertPage() {
   });
   const navigate = useNavigate();
   const inputFileRef = useRef();
+  const dispatch = useDispatch();
+  const allTags = useSelector(getAllTags);
 
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        setIsLoading(true);
-        const tags = await getAllTags();
-        setAllTags(tags);
-      } catch (error) {
-        throw new Error("Failed to fetch tags. Please try again later.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchTags();
-  }, []);
+    dispatch(loadTags());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   const fetchTags = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       const tags = await getAllTags();
+  //       setAllTags(tags);
+  //     } catch (error) {
+  //       throw new Error("Failed to fetch tags. Please try again later.");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchTags();
+  // }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      setIsLoading(true);
-      if (inputFileRef.current.files.length > 0) {
-        const uploadedFile = inputFileRef.current.files[0];
-        const allowedFormats = ["image/jpeg", "image/png"];
 
-        if (allowedFormats.includes(uploadedFile.type)) {
-          formData.photo = uploadedFile;
-        } else {
-          setIsLoading(false);
-          throw new Error("Invalid file format. Only JPEG and PNG images are allowed.");
-        }
-      }
-      const createdAdvert = await createAdvert(formData);
-      navigate(`/adverts/${createdAdvert.id}`);
-    } catch (error) {
-      console.log(error);
-      if (error.status === 401) {
-        navigate("/login");
+    if (inputFileRef.current.files.length > 0) {
+      const uploadedFile = inputFileRef.current.files[0];
+      const allowedFormats = ["image/jpeg", "image/png"];
+
+      if (allowedFormats.includes(uploadedFile.type)) {
+        formData.photo = uploadedFile;
       } else {
-        setError(error);
+        setIsLoading(false);
+        throw new Error("Invalid file format. Only JPEG and PNG images are allowed.");
       }
-    } finally {
-      setIsLoading(false);
     }
+    await dispatch(createNewAdvert(formData));
   };
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     setIsLoading(true);
+  //     if (inputFileRef.current.files.length > 0) {
+  //       const uploadedFile = inputFileRef.current.files[0];
+  //       const allowedFormats = ["image/jpeg", "image/png"];
+
+  //       if (allowedFormats.includes(uploadedFile.type)) {
+  //         formData.photo = uploadedFile;
+  //       } else {
+  //         setIsLoading(false);
+  //         throw new Error("Invalid file format. Only JPEG and PNG images are allowed.");
+  //       }
+  //     }
+  //     const createdAdvert = await createAdvert(formData);
+  //     navigate(`/adverts/${createdAdvert.id}`);
+  //   } catch (error) {
+  //     console.log(error);
+  //     if (error.status === 401) {
+  //       navigate("/login");
+  //     } else {
+  //       setError(error);
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const resetError = () => setError(null);
 

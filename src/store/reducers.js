@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-// import { AUTH_LOGIN, AUTH_LOGOUT, ADVERTS_CREATED, ADVERTS_LOADED_FULFILLED, TAGS_LOADED } from "./types";
 import {
   ADVERTS_LOADED_PENDING,
   ADVERTS_LOADED_FULFILLED,
@@ -7,9 +6,10 @@ import {
   ADVERT_SINGLE_PENDING,
   ADVERT_SINGLE_FULFILLED,
   ADVERT_SINGLE_REJECTED,
-  ADVERTS_CREATED,
+  CREATE_ADVERT_PENDING,
+  CREATE_ADVERT_FULFILLED,
+  CREATE_ADVERT_REJECTED,
   AUTH_LOGIN_FULFILLED,
-  // AUTH_LOGOUT_FULFILLED,
   AUTH_LOGOUT,
   FETCH_USERNAME_PENDING,
   FETCH_USERNAME_FULFILLED,
@@ -106,8 +106,23 @@ export function adverts(state = defaultState.adverts, action) {
         error: action.payload,
         loading: false,
       };
-    case ADVERTS_CREATED:
-      return [...state.data, action.payload];
+    case CREATE_ADVERT_PENDING:
+      return {
+        ...state,
+        loading: true,
+      };
+    case CREATE_ADVERT_FULFILLED:
+      return {
+        ...state,
+        data: [...state.data, action.payload],
+        loading: false,
+      };
+    case CREATE_ADVERT_REJECTED:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
     default:
       return state;
   }

@@ -20,7 +20,13 @@ export const ADVERT_SINGLE_PENDING = "advert/single/pending";
 export const ADVERT_SINGLE_FULFILLED = "advert/single/fulfilled";
 export const ADVERT_SINGLE_REJECTED = "advert/single/rejected";
 
-export const ADVERTS_CREATED = "adverts/created";
+export const CREATE_ADVERT_PENDING = "adverts/create/pending";
+export const CREATE_ADVERT_FULFILLED = "adverts/create/fulfilled";
+export const CREATE_ADVERT_REJECTED = "adverts/create/rejected";
+
+export const DELETE_ADVERT_PENDING = "adverts/delete/pending";
+export const DELETE_ADVERT_FULFILLED = "adverts/delete/fulfilled";
+export const DELETE_ADVERT_REJECTED = "adverts/delete/rejected";
 
 export const TAGS_LOADED_PENDING = "tags/loaded/pending";
 export const TAGS_LOADED_FULFILLED = "tags/loaded/fulfilled";
