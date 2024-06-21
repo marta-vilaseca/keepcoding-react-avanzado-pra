@@ -5,10 +5,10 @@ import defaultPhoto from "../../assets/no-photo.png";
 import { ConfirmationButton } from "../../components/common/ConfirmationButton";
 import { Loader } from "../../components/common/Loader";
 import Layout from "../../components/layout/Layout";
-import { deleteAdvert } from "../../services/advertsService";
+// import { deleteAdvert } from "../../services/advertsService";
 
 import { useDispatch, useSelector } from "react-redux";
-import { loadSingleAdvert } from "../../store/actions";
+import { deleteSingleAdvert, loadSingleAdvert } from "../../store/actions";
 import { getAdvertByID } from "../../store/selectors";
 import "./advertpage.css";
 
@@ -38,16 +38,21 @@ export function AdvertPage() {
   }, [dispatch, id]);
 
   const handleDelete = async () => {
-    try {
-      setIsLoading(true);
-      await deleteAdvert(id);
-      navigate("/adverts");
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
+    setIsLoading(true);
+    dispatch(deleteSingleAdvert(id)).finally(() => setIsLoading(false));
   };
+
+  // const handleDelete = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     await deleteAdvert(id);
+  //     navigate("/adverts");
+  //   } catch (error) {
+  //     setError(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const resetError = () => {
     setError(null);

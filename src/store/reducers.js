@@ -9,6 +9,9 @@ import {
   CREATE_ADVERT_PENDING,
   CREATE_ADVERT_FULFILLED,
   CREATE_ADVERT_REJECTED,
+  DELETE_ADVERT_PENDING,
+  DELETE_ADVERT_FULFILLED,
+  DELETE_ADVERT_REJECTED,
   AUTH_LOGIN_FULFILLED,
   AUTH_LOGOUT,
   FETCH_USERNAME_PENDING,
@@ -118,6 +121,19 @@ export function adverts(state = defaultState.adverts, action) {
         loading: false,
       };
     case CREATE_ADVERT_REJECTED:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    case DELETE_ADVERT_PENDING:
+      return {
+        ...state,
+        loading: true,
+      };
+    case DELETE_ADVERT_FULFILLED:
+      return { ...state, data: state.data.filter((ad) => ad.id !== action.payload) };
+    case DELETE_ADVERT_REJECTED:
       return {
         ...state,
         error: action.payload,
