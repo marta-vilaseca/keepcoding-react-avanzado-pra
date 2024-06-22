@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import defaultPhoto from "../../assets/no-photo.png";
 // import { Button } from "../../components/common/Button";
 import { ConfirmationButton } from "../../components/common/ConfirmationButton";
@@ -19,7 +19,6 @@ export function AdvertPage() {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { id } = useParams();
 
   const advert = useSelector((state) => getAdvertByID(id)(state));
