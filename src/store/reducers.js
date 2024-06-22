@@ -22,6 +22,7 @@ import {
   TAGS_LOADED_REJECTED,
   UPDATE_FILTERS,
   CLEAR_FILTERS,
+  UI_RESET_ERROR,
 } from "./types";
 
 export const defaultState = {
@@ -40,8 +41,10 @@ export const defaultState = {
     data: [],
     loaded: false,
   },
-  isLoading: false,
-  error: null,
+  ui: {
+    pending: false,
+    error: null,
+  },
 };
 
 export function auth(state = defaultState.auth, action) {
@@ -180,6 +183,22 @@ export function filters(state = defaultState.filters, action) {
   }
 }
 
-const reducer = combineReducers({ auth, user, adverts, tags, filters });
+export function ui(state = defaultState.ui, action) {
+  if (action.error) {
+    return { ...state, pending: false, error: action.payload };
+  }
+  if (action.type === UI_RESET_ERROR) {
+    return { ...state, error: null };
+  }
+  if (action.type.endsWith("/pending")) {
+    return { ...state, pending: true };
+  }
+  if (action.type.endsWith("/fulfilled")) {
+    return { ...state, pending: false, error: null };
+  }
+  return state;
+}
+
+const reducer = combineReducers({ auth, user, adverts, tags, filters, ui });
 
 export default reducer;

@@ -1,8 +1,8 @@
-# 🛒 Nodepop React
+# 🛒 Nodepop React V2
 
 > 👤 Marta Vilaseca Foradada  
 > 💻 XVI Bootcamp Full Stack Web  
-> 📅 5 Mayo 2024
+> 📅 23 Junio 2024
 
 Vamos a crear una aplicación de tipo dashboard, que será la interfaz gráfica desde la que podremos gestionar el API de anuncios **Nodepop**.
 

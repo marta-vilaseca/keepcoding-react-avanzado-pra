@@ -1,23 +1,22 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../components/common/Button.jsx";
 import { Loader } from "../../components/common/Loader.jsx";
 import { FormCheckbox } from "../../components/common/formElements/formCheckbox.jsx";
 import { FormInputText } from "../../components/common/formElements/formInputText.jsx";
 import Layout from "../../components/layout/Layout.jsx";
-import { authLogin } from "../../store/actions";
+import { authLogin, uiResetError } from "../../store/actions";
+
+import { getError, getPending } from "../../store/selectors";
 import "./login.css";
 
 export function LoginPage() {
   const dispatch = useDispatch();
+  const resetError = () => dispatch(uiResetError());
+  const error = useSelector(getError);
+  const isLoading = useSelector(getPending);
 
   const [formValues, setFormValues] = useState({ email: "", password: "", rememberMe: false });
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const location = useLocation();
-  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -33,8 +32,6 @@ export function LoginPage() {
     event.preventDefault();
     dispatch(authLogin(formValues));
   };
-
-  const resetError = () => setError(null);
 
   const { email, password, rememberMe } = formValues;
   const buttonDisabled = !email || !password || isLoading;

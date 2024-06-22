@@ -12,6 +12,8 @@ export const FETCH_USERNAME_PENDING = "auth/username/pending";
 export const FETCH_USERNAME_FULFILLED = "auth/username/fulfilled";
 export const FETCH_USERNAME_REJECTED = "auth/username/rejected";
 
+export const UI_RESET_ERROR = "ui/reset-error";
+
 export const ADVERTS_LOADED_PENDING = "adverts/loaded/pending";
 export const ADVERTS_LOADED_FULFILLED = "adverts/loaded/fulfilled";
 export const ADVERTS_LOADED_REJECTED = "adverts/loaded/rejected";
@@ -32,8 +34,5 @@ export const TAGS_LOADED_PENDING = "tags/loaded/pending";
 export const TAGS_LOADED_FULFILLED = "tags/loaded/fulfilled";
 export const TAGS_LOADED_REJECTED = "tags/loaded/rejected";
 
-// export const SET_NAME_FILTER = "SET_NAME_FILTER";
-// export const SET_TAGS_FILTER = "SET_TAGS_FILTER";
-// export const SET_SALE_FILTER = "SET_SALE_FILTER";
 export const UPDATE_FILTERS = "UPDATE_FILTERS";
 export const CLEAR_FILTERS = "CLEAR_FILTERS";

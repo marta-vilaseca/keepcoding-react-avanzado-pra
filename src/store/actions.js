@@ -27,6 +27,7 @@ import {
   TAGS_LOADED_REJECTED,
   UPDATE_FILTERS,
   CLEAR_FILTERS,
+  UI_RESET_ERROR,
 } from "./types";
 
 /* LOGIN
@@ -275,4 +276,10 @@ export const updateFilters = (filters) => ({
 
 export const clearFilters = () => ({
   type: CLEAR_FILTERS,
+});
+
+/* related to UI for ERROR DISPLAYING
+------------------------------------------ */
+export const uiResetError = () => ({
+  type: UI_RESET_ERROR,
 });

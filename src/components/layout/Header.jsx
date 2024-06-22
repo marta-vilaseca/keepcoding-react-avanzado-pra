@@ -1,39 +1,28 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Nodepop from "../../assets/nodepop.svg?react";
 import { logout } from "../../services/loginService";
-import { authLogout } from "../../store/actions";
-import { getIsLogged } from "../../store/selectors";
+import { authLogout, uiResetError } from "../../store/actions";
+import { getError, getIsLogged } from "../../store/selectors";
 import { ConfirmationButton } from "../common/ConfirmationButton";
 import "./header.css";
 
 export default function Header() {
   const isLogged = useSelector(getIsLogged);
   const dispatch = useDispatch();
+  const resetError = () => {
+    dispatch(uiResetError());
+    setShowConfirmLogout(false);
+  };
+  const headerError = useSelector(getError);
 
-  const [headerError, setHeaderError] = useState(null);
   const [showConfirmLogout, setShowConfirmLogout] = useState(false);
-
-  const navigate = useNavigate();
-  // const { onLogout } = useAuth();
-
-  // const handleLogout = async () => {
-  //   try {
-  //     await logout();
-  //     onLogout();
-  //     navigate("/login");
-  //   } catch (error) {
-  //     setHeaderError(`Logout failed: ${error.message}`);
-  //   }
-  // };
 
   const handleLogout = async () => {
     await logout();
     dispatch(authLogout());
   };
-
-  const resetError = () => setHeaderError(null);
 
   const confirmLogout = () => {
     setShowConfirmLogout(true);
@@ -47,7 +36,7 @@ export default function Header() {
     <>
       {headerError && (
         <div className="error-message" onClick={resetError}>
-          ERROR: {headerError}
+          ERROR: {headerError.status}: {headerError.message}
         </div>
       )}
       <header className="header">

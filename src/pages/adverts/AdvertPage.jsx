@@ -1,61 +1,37 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import defaultPhoto from "../../assets/no-photo.png";
-// import { Button } from "../../components/common/Button";
 import { ConfirmationButton } from "../../components/common/ConfirmationButton";
 import { Loader } from "../../components/common/Loader";
 import Layout from "../../components/layout/Layout";
-// import { deleteAdvert } from "../../services/advertsService";
 
 import { useDispatch, useSelector } from "react-redux";
-import { deleteSingleAdvert, loadSingleAdvert } from "../../store/actions";
-import { getAdvertByID } from "../../store/selectors";
+import { deleteSingleAdvert, loadSingleAdvert, uiResetError } from "../../store/actions";
+import { getAdvertByID, getError, getPending } from "../../store/selectors";
 import "./advertpage.css";
 
 export function AdvertPage() {
-  const [error, setError] = useState(null);
-  // const [advert, setAdvert] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const dispatch = useDispatch();
+  const resetError = () => {
+    dispatch(uiResetError());
+    setShowConfirmDelete(false);
+  };
+  const error = useSelector(getError);
+  const isLoading = useSelector(getPending);
   const { id } = useParams();
 
   const advert = useSelector((state) => getAdvertByID(id)(state));
 
-  // useEffect(() => {
-  //   if (id && !advert) {
-  //     dispatch(loadSingleAdvert(id));
-  //   }
-  // }, [dispatch, id, advert]);
-
   useEffect(() => {
     if (id) {
-      setIsLoading(true);
-      dispatch(loadSingleAdvert(id)).finally(() => setIsLoading(false));
+      dispatch(loadSingleAdvert(id));
     }
   }, [dispatch, id]);
 
   const handleDelete = async () => {
-    setIsLoading(true);
-    dispatch(deleteSingleAdvert(id)).finally(() => setIsLoading(false));
-  };
-
-  // const handleDelete = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     await deleteAdvert(id);
-  //     navigate("/adverts");
-  //   } catch (error) {
-  //     setError(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  const resetError = () => {
-    setError(null);
-    setShowConfirmDelete(false);
+    dispatch(deleteSingleAdvert(id));
   };
 
   return (

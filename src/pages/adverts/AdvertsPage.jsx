@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -11,27 +11,25 @@ import { FormInputText } from "../../components/common/formElements/formInputTex
 import { FormSelect } from "../../components/common/formElements/formSelect";
 import Layout from "../../components/layout/Layout";
 
-import { clearFilters, loadAdverts, loadTags, updateFilters } from "../../store/actions";
-import { getAllAdverts, getAllTags, getFilters } from "../../store/selectors";
+import { clearFilters, loadAdverts, loadTags, uiResetError, updateFilters } from "../../store/actions";
+import { getAllAdverts, getAllTags, getError, getFilters, getPending } from "../../store/selectors";
 
 import "./advertsPage.css";
 
 export function AdvertsPage() {
   const dispatch = useDispatch();
+  const resetError = () => dispatch(uiResetError());
+  const error = useSelector(getError);
+  const isLoading = useSelector(getPending);
 
   const adverts = useSelector(getAllAdverts);
   const allTags = useSelector(getAllTags);
   const filters = useSelector(getFilters) || { name: "", tags: [], sale: "all" };
 
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
     dispatch(loadAdverts());
     dispatch(loadTags());
   }, [dispatch]);
-
-  const resetError = () => setError(null);
 
   const applyFilters = (filters, adverts) => {
     let filteredAdverts = adverts;
@@ -106,7 +104,7 @@ export function AdvertsPage() {
         <>
           {error && (
             <div className="error-message" onClick={resetError}>
-              ERROR: {error}
+              ERROR {error.status}: {error.message}
             </div>
           )}
           {!isLoading && (
