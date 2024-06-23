@@ -80,10 +80,10 @@ export const authLogoutRejected = (error) => ({
 
 export const authLogout =
   () =>
-  async (dispatch, _getState, { services: { logout } }) => {
+  async (dispatch, _getState, { services: { auth } }) => {
     try {
       dispatch(authLogoutPending());
-      await logout();
+      await auth.logout();
       dispatch(authLogoutFulfilled());
     } catch (error) {
       dispatch(authLogoutRejected(error));
