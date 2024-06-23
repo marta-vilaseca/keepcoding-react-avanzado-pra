@@ -1,6 +1,6 @@
 export const getIsLogged = (state) => state.auth;
 
-export const getUsername = (state) => state.user.username;
+export const getUsername = (state) => state.username.username;
 export const getUsernameError = (state) => state.user.error;
 
 export const getError = (state) => state.ui.error;

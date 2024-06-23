@@ -6,6 +6,8 @@
 
 Vamos a crear una aplicación de tipo dashboard, que será la interfaz gráfica desde la que podremos gestionar el API de anuncios **Nodepop**.
 
+👇🏻[Novedades V2](#novedades-v2)
+
 ![Preview](./Nodepop.png)
 
 ## Instalar y arrancar proyecto
@@ -149,3 +151,33 @@ Header[‘Authorization’] = `Bearer ${token}`
 
 - Los datos del backend son persistidos en una **base de datos sqlite** en el directorio **/data**
 - Las fotos subidas al backend son almacenadas en el directorio **/uploads** y servidas por el backend cómo contenido estático en **/public** **(la ruta pública de cada foto es almacenada en la base de datos)**.
+
+### Novedades V2
+
+Para la versión 2 se ha trabajado lo siguiente:
+
+#### Implementación de REDUX
+
+- Configurar **un store Redux** donde se almacenará al menos la siguiente información:
+  - [x] **Información sobre la sesión o el usuario registrado en el sistema**
+    - [x] Al iniciar la aplicación se deberá leer la información del token desde el LocalStorage (si existiese) y se almacenará en el store de Redux el estado correspondiente
+    - [x] Al hacer login guardaremos el estado en el store de Redux, y en el Local Storage si se eligió recordar sesion.
+  - [x] **Información sobre los anuncios**. El store deberá manejar:
+    - [x] la obtención de tags disponibles
+    - [x] de anuncios desde el API (listado y detalle)
+    - [x] la creación de anuncios
+    - [x] el borrado de anuncios
+  - [x] **_\*IMPORTANTE modelar correctamente el estado que se va a guardar en el store_**
+- Crear las acciones y reducers necesarios para poder cumplir los objetivos del punto 1.
+- Conectar los componentes con el store de redux (connect / hooks)
+- **Configurar Redux Dev Tools** para simplificar las tareas de debugging de la aplicación.
+
+#### TESTING
+
+- Crear tests unitarios, dando al menos un ejemplo de cada uno de estos casos:
+  - [x] Una acción síncrona
+  - [x] Una acción asíncrona
+  - [x] Un reducer
+  - [x] Un selector
+  - [x] Un componente con snapshot testing
+  - [x] Comprobar el funcionamiento de un componente que ejecuta una acción del store, mockeando la acción
