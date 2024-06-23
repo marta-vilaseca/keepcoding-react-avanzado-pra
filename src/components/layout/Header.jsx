@@ -5,6 +5,7 @@ import Nodepop from "../../assets/nodepop.svg?react";
 import { logout } from "../../services/loginService";
 import { authLogout, uiResetError } from "../../store/actions";
 import { getError, getIsLogged } from "../../store/selectors";
+import FetchUsername from "../auth/FetchUsername";
 import { ConfirmationButton } from "../common/ConfirmationButton";
 import "./header.css";
 
@@ -48,7 +49,7 @@ export default function Header() {
           </h1>
           {isLogged && (
             <nav>
-              {/* <FetchUsername /> */}
+              <FetchUsername />
               <ul className="nav__navigation">
                 <li>
                   <NavLink to="/adverts" end>

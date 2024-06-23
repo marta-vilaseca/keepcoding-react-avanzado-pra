@@ -1,6 +1,6 @@
 import { areAdvertsLoaded, areTagsLoaded, getAdvertByID } from "./selectors";
-// import { getUserName } from "../api/client";
-// import storage from "../utils/storage";
+import { getUserName } from "../api/client";
+import storage from "../utils/storage";
 
 import {
   AUTH_LOGIN_PENDING,
@@ -27,6 +27,9 @@ import {
   UPDATE_FILTERS,
   CLEAR_FILTERS,
   UI_RESET_ERROR,
+  FETCH_USERNAME_PENDING,
+  FETCH_USERNAME_FULFILLED,
+  FETCH_USERNAME_REJECTED,
 } from "./types";
 
 /* LOGIN
@@ -89,19 +92,19 @@ export const authLogout =
 
 /* FETCH USERNAME
   --------------------------------------- */
-// export const fetchUsername = () => async (dispatch) => {
-//   dispatch({ type: FETCH_USERNAME_PENDING });
+export const fetchUsername = () => async (dispatch) => {
+  dispatch({ type: FETCH_USERNAME_PENDING });
 
-//   try {
-//     const accessToken = storage.get("auth");
-//     if (accessToken) {
-//       const fetchedUsername = await getUserName(accessToken);
-//       dispatch({ type: FETCH_USERNAME_FULFILLED, payload: fetchedUsername });
-//     }
-//   } catch (error) {
-//     dispatch({ type: FETCH_USERNAME_REJECTED, payload: error.message });
-//   }
-// };
+  try {
+    const accessToken = storage.get("auth");
+    if (accessToken) {
+      const fetchedUsername = await getUserName(accessToken);
+      dispatch({ type: FETCH_USERNAME_FULFILLED, payload: fetchedUsername });
+    }
+  } catch (error) {
+    dispatch({ type: FETCH_USERNAME_REJECTED, payload: error.message });
+  }
+};
 
 /* ADVERTS
   --------------------------------------- */
