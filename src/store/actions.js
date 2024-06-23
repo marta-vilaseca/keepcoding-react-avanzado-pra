@@ -6,10 +6,9 @@ import {
   AUTH_LOGIN_PENDING,
   AUTH_LOGIN_FULFILLED,
   AUTH_LOGIN_REJECTED,
-  // AUTH_LOGOUT_PENDING,
-  // AUTH_LOGOUT_FULFILLED,
-  // AUTH_LOGOUT_REJECTED,
-  AUTH_LOGOUT,
+  AUTH_LOGOUT_PENDING,
+  AUTH_LOGOUT_FULFILLED,
+  AUTH_LOGOUT_REJECTED,
   ADVERTS_LOADED_PENDING,
   ADVERTS_LOADED_FULFILLED,
   ADVERTS_LOADED_REJECTED,
@@ -62,34 +61,34 @@ export const authLogin = (credentials) => {
 
 /* LOGOUT
   --------------------------------------- */
-export const authLogout = () => ({
-  type: AUTH_LOGOUT,
+export const authLogoutPending = () => ({
+  type: AUTH_LOGOUT_PENDING,
 });
 
-// export const authLogoutPending = () => ({
-//   type: AUTH_LOGOUT_PENDING,
-// });
+export const authLogoutFulfilled = () => ({
+  type: AUTH_LOGOUT_FULFILLED,
+});
 
-// export const authLogoutFulfilled = () => ({
-//   type: AUTH_LOGOUT_FULFILLED,
-// });
+export const authLogoutRejected = (error) => ({
+  type: AUTH_LOGOUT_REJECTED,
+  payload: error,
+  error: true,
+});
 
-// export const authLogoutRejected = (error) => ({
-//   type: AUTH_LOGOUT_REJECTED,
-//   payload: error,
-//   error: true,
-// });
+export const authLogout =
+  () =>
+  async (dispatch, _getState, { services: { logout } }) => {
+    try {
+      dispatch(authLogoutPending());
+      await logout();
+      dispatch(authLogoutFulfilled());
+    } catch (error) {
+      dispatch(authLogoutRejected(error));
+    }
+  };
 
-// export const authLogout = () => async (dispatch) => {
-//   try {
-//     dispatch(authLogoutPending());
-//     await logout();
-//     dispatch(authLogoutFulfilled());
-//   } catch (error) {
-//     dispatch(logoutRejected(error));
-//   }
-// };
-
+/* FETCH USERNAME
+  --------------------------------------- */
 // export const fetchUsername = () => async (dispatch) => {
 //   dispatch({ type: FETCH_USERNAME_PENDING });
 

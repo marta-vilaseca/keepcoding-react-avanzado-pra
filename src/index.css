@@ -81,6 +81,15 @@ main .error-message {
   color: var(--reverse-text-color);
 }
 
+/* Hide the .error-message inside .layout if there's another .error-message inside #root */
+#root:has(.error-message) .layout .error-message {
+  display: none;
+}
+/* Show the first .error-message (Potato) even though it matches the rule above */
+#root .error-message {
+  display: block;
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --text-color: #f3f1ebff;

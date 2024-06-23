@@ -13,7 +13,7 @@ import {
   DELETE_ADVERT_FULFILLED,
   DELETE_ADVERT_REJECTED,
   AUTH_LOGIN_FULFILLED,
-  AUTH_LOGOUT,
+  AUTH_LOGOUT_FULFILLED,
   FETCH_USERNAME_PENDING,
   FETCH_USERNAME_FULFILLED,
   FETCH_USERNAME_REJECTED,
@@ -47,17 +47,21 @@ export const defaultState = {
   },
 };
 
+/* LOGIN & LOGOUT
+--------------------------------------------------------------------- */
 export function auth(state = defaultState.auth, action) {
   switch (action.type) {
     case AUTH_LOGIN_FULFILLED:
       return true;
-    case AUTH_LOGOUT:
+    case AUTH_LOGOUT_FULFILLED:
       return false;
     default:
       return state;
   }
 }
 
+/* USERNAME
+--------------------------------------------------------------------- */
 export function user(state = defaultState.username, action) {
   switch (action.type) {
     case FETCH_USERNAME_PENDING:
@@ -77,6 +81,8 @@ export function user(state = defaultState.username, action) {
   }
 }
 
+/* ADVERTS
+--------------------------------------------------------------------- */
 export function adverts(state = defaultState.adverts, action) {
   switch (action.type) {
     case ADVERTS_LOADED_PENDING:
@@ -147,6 +153,8 @@ export function adverts(state = defaultState.adverts, action) {
   }
 }
 
+/* TAGS
+--------------------------------------------------------------------- */
 export function tags(state = defaultState.tags, action) {
   switch (action.type) {
     case TAGS_LOADED_PENDING:
@@ -169,6 +177,8 @@ export function tags(state = defaultState.tags, action) {
   }
 }
 
+/* FILTERS
+--------------------------------------------------------------------- */
 export function filters(state = defaultState.filters, action) {
   switch (action.type) {
     case UPDATE_FILTERS:
@@ -183,6 +193,8 @@ export function filters(state = defaultState.filters, action) {
   }
 }
 
+/* UI
+--------------------------------------------------------------------- */
 export function ui(state = defaultState.ui, action) {
   if (action.error) {
     return { ...state, pending: false, error: action.payload };

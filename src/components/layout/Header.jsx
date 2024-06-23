@@ -36,7 +36,7 @@ export default function Header() {
     <>
       {headerError && (
         <div className="error-message" onClick={resetError}>
-          ERROR: {headerError.status}: {headerError.message}
+          ERROR: {headerError.status}:: {headerError.message}
         </div>
       )}
       <header className="header">
