@@ -52,8 +52,13 @@ export function AdvertsPage() {
   const handleChange = (event) => {
     const { name, value, checked } = event.target;
     let updatedFilters = { ...filters };
+
     if (name === "tags") {
-      updatedFilters.tags = checked ? [...updatedFilters.tags, value] : updatedFilters.tags.filter((tag) => tag !== value);
+      if (value === "") {
+        updatedFilters.tags = [];
+      } else {
+        updatedFilters.tags = checked ? [...updatedFilters.tags, value] : updatedFilters.tags.filter((tag) => tag !== value);
+      }
     } else {
       updatedFilters[name] = value;
     }

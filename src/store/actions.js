@@ -175,12 +175,10 @@ export const createNewAdvert =
   async (dispatch, _getState, { services, router }) => {
     try {
       dispatch(createAdvertPending());
-      // console.log("Form content:", formValues);
       const response = await services.adverts.createAdvert(formValues);
-      // console.log("Response from createAdvert:", response);
-      dispatch(createAdvertFulfilled(response));
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      dispatch(createAdvertFulfilled(response));
       const redirectTo = `/adverts/${response.id}`;
       router.navigate(redirectTo, { replace: true });
     } catch (error) {
