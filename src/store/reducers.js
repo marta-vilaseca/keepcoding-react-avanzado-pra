@@ -62,7 +62,7 @@ export function auth(state = defaultState.auth, action) {
 
 /* USERNAME
 --------------------------------------------------------------------- */
-export function user(state = defaultState.username, action) {
+export function username(state = defaultState.username, action) {
   switch (action.type) {
     case FETCH_USERNAME_PENDING:
       return { ...state };
@@ -211,6 +211,6 @@ export function ui(state = defaultState.ui, action) {
   return state;
 }
 
-const reducer = combineReducers({ auth, user, adverts, tags, filters, ui });
+const reducer = combineReducers({ auth, username, adverts, tags, filters, ui });
 
 export default reducer;
